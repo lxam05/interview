@@ -1,0 +1,58 @@
+{
+  "name": "interview",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:pg": "vitest run --config vitest.pg.config.mts",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/cli/migrate.ts",
+    "setup": "tsx src/cli/setup.ts",
+    "demo": "tsx src/cli/demo.ts",
+    "research": "tsx src/cli/research.ts",
+    "research:inspect": "tsx src/cli/inspect.ts",
+    "research:worker": "tsx src/cli/worker.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
+    "@electric-sql/pglite": "^0.5.16",
+    "@mozilla/readability": "^0.6.0",
+    "drizzle-orm": "^0.45.4",
+    "ipaddr.js": "^2.5.0",
+    "linkedom": "^0.18.15",
+    "next": "16.4.6",
+    "pg": "^8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "robots-parser": "^3.0.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.18.20": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

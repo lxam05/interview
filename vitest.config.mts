@@ -10,5 +10,6 @@ export default defineConfig({
     exclude: ["test/pg/**", "node_modules/**"],
     environment: "node",
     testTimeout: 20_000,
+    env: { LOG_SILENT: "1" },
   },
 });

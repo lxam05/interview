@@ -265,3 +265,24 @@ describe("run queue", () => {
     expect(await store.findCompany(db, "Nobody")).toBeNull();
   });
 });
+
+describe("source policy in a run", () => {
+  it("drops excluded search results before storing them", async () => {
+    const db = await testDb();
+    const { run } = await setup(db);
+    const adapter: SourceAdapter = {
+      name: "fake",
+      kind: "web",
+      costPerCallUsd: 0,
+      enabled: () => true,
+      search: async () => [
+        { url: "https://www.glassdoor.ie/Interview/x.htm", title: "x", snippet: null, platform: "web" },
+        { url: "https://rocketreach.co/someone", title: "x", snippet: null, platform: "web" },
+      ],
+    };
+    const summary = await executeRun(db, run.id, deps({ adapters: [adapter], extraCandidates: [] }));
+    expect(summary.stats.excluded).toBeGreaterThan(0);
+    const stored = await db.select().from(sources);
+    expect(stored.some((s) => /glassdoor|rocketreach/.test(s.canonicalUrl))).toBe(false);
+  });
+});

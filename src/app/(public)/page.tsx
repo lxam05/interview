@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { readLocations, readPublished, readSearch } from "@/briefs/read";
 import { Evidence } from "@/components/evidence";
+import { QueryPrefill } from "@/components/query-prefill";
 import { shortDate } from "@/components/format";
 
 type Search = Promise<{ q?: string; location?: string }>;
@@ -15,8 +16,17 @@ export default function Home({ searchParams }: { searchParams: Search }) {
         <Form action="/" className="max-w-[22ch] sm:max-w-none" role="search" aria-label="Find a company">
           <h1 className="t-display max-w-[18ch]">
             <label htmlFor="q">What should I study for my</label>{" "}
-            <Suspense fallback={<input id="q" name="q" className="blank" placeholder="company" autoComplete="off" />}>
-              <QueryBlank searchParams={searchParams} />
+            <input
+              id="q"
+              name="q"
+              className="blank"
+              placeholder="company"
+              autoComplete="off"
+              spellCheck={false}
+              maxLength={80}
+            />
+            <Suspense fallback={null}>
+              <QueryPrefill inputId="q" />
             </Suspense>{" "}
             internship interview?
           </h1>
@@ -39,22 +49,6 @@ export default function Home({ searchParams }: { searchParams: Search }) {
         </Suspense>
       </section>
     </>
-  );
-}
-
-async function QueryBlank({ searchParams }: { searchParams: Search }) {
-  const { q = "" } = await searchParams;
-  return (
-    <input
-      id="q"
-      name="q"
-      className="blank"
-      defaultValue={q}
-      placeholder="company"
-      autoComplete="off"
-      spellCheck={false}
-      maxLength={80}
-    />
   );
 }
 

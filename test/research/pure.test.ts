@@ -267,3 +267,26 @@ describe("queries", () => {
     expect(buildKeywordQueries(input).length).toBeGreaterThan(0);
   });
 });
+
+describe("source policy", () => {
+  it("excludes sites by name across regional domains and subdomains", async () => {
+    const { exclusionReason } = await import("@/research/source-policy");
+    for (const url of [
+      "https://www.glassdoor.ie/Interview/x.htm",
+      "https://glassdoor.com/x",
+      "https://uk.indeed.com/cmp/x",
+      "https://ie.linkedin.com/in/someone",
+      "https://jointaro.com/interviews/x",
+      "https://rocketreach.co/someone-email_1",
+    ]) {
+      expect(exclusionReason(url), url).not.toBeNull();
+    }
+    for (const url of ["https://workday.com/careers", "https://news.ycombinator.com/item?id=1", "https://github.com/x/y", "not a url"]) {
+      expect(exclusionReason(url), url).toBeNull();
+    }
+  });
+
+  it("the fetch guard refuses excluded sites", () => {
+    expect(() => assertFetchableUrl("https://www.glassdoor.com/Interview/x.htm")).toThrow(/RESEARCH_SOURCE_EXCLUDED|was not used/);
+  });
+});

@@ -27,6 +27,7 @@ export const ERROR_CODES = {
   RESEARCH_FETCH_STATUS: "The page answered with an error status.",
   RESEARCH_UNSUPPORTED_CONTENT: "The page is too large or is not text.",
   RESEARCH_BLOCKED_ADDRESS: "The address is not a public http(s) address and was not fetched.",
+  RESEARCH_SOURCE_EXCLUDED: "The site is on the excluded list (terms or personal data) and was not used.",
   RESEARCH_LLM_KEY_MISSING: "ANTHROPIC_API_KEY is not set, so extraction cannot run.",
   RESEARCH_LLM_TRANSIENT: "The model API was overloaded, rate limited or timed out.",
   RESEARCH_LLM_REFUSAL: "The model declined to process this document.",
@@ -152,6 +153,11 @@ export const errors = {
   unsupportedContent: (url: string, why: string) =>
     new ResearchError("RESEARCH_UNSUPPORTED_CONTENT", `${url} was skipped: ${why}`, {
       fix: "none needed; the source is recorded and skipped",
+      retry: "none",
+    }),
+  sourceExcluded: (url: string, why: string) =>
+    new ResearchError("RESEARCH_SOURCE_EXCLUDED", `${url} was not used: ${why}`, {
+      fix: "none; see docs/sources.md for why this site is excluded",
       retry: "none",
     }),
   blockedAddress: (url: string, why: string) =>

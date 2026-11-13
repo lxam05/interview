@@ -10,9 +10,13 @@
 
 ## Not used
 
+Enforced in `src/research/source-policy.ts`: results from these sites are dropped at discovery, and the fetcher refuses them (`RESEARCH_SOURCE_EXCLUDED`).
+
 - **Glassdoor**: its terms forbid collection. Not implemented.
+- **Indeed and LinkedIn**: terms forbid automated collection. Excluded.
+- **People-lookup sites** (RocketReach, ZoomInfo, Apollo, ContactOut, SignalHire, Lusha): personal data, never relevant. Excluded.
 - **Reddit**: needs an approved API application. Documented boundary only; not implemented.
-- **Taro (jointaro.com)**: publishes Ireland-tagged internship reports. Its terms have not been reviewed, so it is at most a link-out until they are. It is also a competitor.
+- **Taro (jointaro.com)**: publishes Ireland-tagged internship reports. Its terms have not been reviewed, so it is excluded from collection and is at most a link-out until they are. It is also a competitor.
 
 ## Rules for every source
 

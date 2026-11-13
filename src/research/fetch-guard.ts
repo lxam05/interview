@@ -1,3 +1,4 @@
+import { exclusionReason } from "./source-policy";
 import dns from "node:dns";
 import type { LookupFunction } from "node:net";
 import ipaddr from "ipaddr.js";
@@ -48,6 +49,8 @@ export function assertFetchableUrl(raw: string): URL {
   if (url.username || url.password) {
     throw errors.blockedAddress(raw, "URLs with credentials are not allowed");
   }
+  const excluded = exclusionReason(raw);
+  if (excluded) throw errors.sourceExcluded(raw, excluded);
   const host = url.hostname.replace(/^\[|\]$/g, "");
   if (ipaddr.isValid(host) && !isPublicAddress(host)) {
     throw errors.blockedAddress(raw, "address is private, loopback or link-local");

@@ -6,6 +6,7 @@ import { extractClaims, EXTRACTOR_VERSION, type ExtractionLlm } from "./extract"
 import { buildKeywordQueries, buildQueries } from "./queries";
 import type { Retriever } from "./retrieve";
 import * as store from "./store";
+import { exclusionReason } from "./source-policy";
 import { EXTRACTION_CONCURRENCY } from "./thresholds";
 import type { Candidate } from "./types";
 
@@ -94,6 +95,10 @@ export async function executeRun(db: Db, runId: number, deps: RunDeps): Promise<
     ];
     const pending = new Map<string, Candidate>();
     for (const candidate of extras) {
+      if (exclusionReason(candidate.url)) {
+        stats.excluded = (stats.excluded ?? 0) + 1;
+        continue;
+      }
       const source = await store.upsertSource(db, candidate, { runId, isSynthetic: run.isSynthetic });
       pending.set(source.canonicalUrl, candidate);
     }
@@ -112,6 +117,11 @@ export async function executeRun(db: Db, runId: number, deps: RunDeps): Promise<
           stats.queries++;
           await store.markQuery(db, adapter.name, query, found.length);
           for (const candidate of found) {
+            // Excluded sites are dropped before anything is stored or fetched.
+            if (exclusionReason(candidate.url)) {
+              stats.excluded = (stats.excluded ?? 0) + 1;
+              continue;
+            }
             try {
               const source = await store.upsertSource(db, candidate, { runId });
               if (candidate.text !== undefined) pending.set(source.canonicalUrl, candidate);

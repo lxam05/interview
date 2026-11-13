@@ -46,6 +46,9 @@ The page is not text or is larger than the size cap. Skipped. If the content mat
 ## RESEARCH_BLOCKED_ADDRESS
 The URL is not public http(s): it resolves to a private, loopback or link-local address, or uses another scheme. It is never fetched. This protects the server; nothing to retry.
 
+## RESEARCH_SOURCE_EXCLUDED
+The site is on the excluded list in `src/research/source-policy.ts`: its terms forbid collection, its terms are not reviewed yet, or it is a people-lookup site. Search results from it are dropped before anything is stored, and the fetcher refuses it. Nothing to retry. See [sources.md](sources.md).
+
 ## RESEARCH_LLM_KEY_MISSING
 `ANTHROPIC_API_KEY` is not set, so no claims can be extracted. Discovery and retrieval still run and the run ends `partial`. Set the key (with Keysmith: `keysmith run -- npm run research:worker`).
 

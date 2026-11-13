@@ -12,7 +12,9 @@
 
 - Queue from an internship's page or `npm run research -- --company "<name>" --queue`.
 - `npm run research:worker` must be running to carry runs out (`--once` to drain the queue and exit).
-- Keys come from the environment; with Keysmith, `keysmith run -- npm run research:worker`.
+- Keys live in the macOS Keychain through Keysmith; `.env` only holds `keysmith://` placeholders. Run anything that needs them through Keysmith: `keysmith run -- npm run research:worker`, `keysmith run -- npm run research -- --company "<name>"`. Without `keysmith run` the placeholders count as unset.
+- Connected: `ANTHROPIC_API_KEY`, `TAVILY_API_KEY`, `GITHUB_TOKEN` (read-only). Check with Keysmith's status, never by printing values.
+- Start with `--dry-run`, and keep `--max-cost` low. The first real run (Workday, Dublin) cost $0.065 for 29 sources and 33 claims.
 - A run page lists every source with its status, every skipped source with its error code, and the cost.
 
 ## Error codes

@@ -25,6 +25,7 @@ Cache Components is on. Pages prerender a static shell; anything reading the req
 
 ## Known limits
 
+- The e2e test covers research with recorded fixtures, not live adapters.
 - No real research has run yet: the live evidence check (slice 3) needs `ANTHROPIC_API_KEY` and a web search key. Until then the public site has no briefs except those built from student reports.
 - Extraction accuracy on real documents is unmeasured. The plan is to hand-label about 20 documents in the first live run.
 - Reddit is not implemented (needs an approved API app); Glassdoor is excluded by its terms. See [sources.md](sources.md).

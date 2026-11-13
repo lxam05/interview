@@ -38,8 +38,10 @@ const int = (v: FormDataEntryValue | null) => {
 const str = (v: FormDataEntryValue | null) => (typeof v === "string" ? v.trim() : "");
 
 function back(path: string, outcome: { done?: string; error?: string }): never {
+  // The query must come before any #anchor, or the browser treats it as part of the anchor.
+  const [base, hash] = path.split("#");
   const q = new URLSearchParams(outcome as Record<string, string>).toString();
-  redirect(`${path}${path.includes("?") ? "&" : "?"}${q}`);
+  redirect(`${base}${base.includes("?") ? "&" : "?"}${q}${hash ? `#${hash}` : ""}`);
 }
 
 function message(err: unknown): string {

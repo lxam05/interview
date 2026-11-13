@@ -16,7 +16,8 @@
     "demo": "tsx src/cli/demo.ts",
     "research": "tsx src/cli/research.ts",
     "research:inspect": "tsx src/cli/inspect.ts",
-    "research:worker": "tsx src/cli/worker.ts"
+    "research:worker": "tsx src/cli/worker.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.8.0",
@@ -35,6 +36,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/turbopack": "4.3.3",
     "@types/node": "^22.20.5",
     "@types/pg": "^8.23.1",

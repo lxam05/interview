@@ -64,6 +64,7 @@ GitHub and Hacker News still runs but no claims are extracted.
 | `npm run db:migrate` | Applies migrations and reference data. |
 | `npm test` | Unit and integration tests on in-memory Postgres (PGlite). |
 | `npm run test:pg` | Concurrency tests on real Postgres (`TEST_DATABASE_URL`). |
+| `npm run test:e2e` | Builds the app and walks the whole journey in Chromium against its own `interview_e2e` database. First time: `npx playwright install chromium`. |
 | `npm run typecheck` / `lint` | Static checks. |
 
 ## Documentation

@@ -9,6 +9,7 @@ Read `node_modules/next/dist/docs/` before using a Next.js API: this version dif
 ## Commands
 - `npm run demo`: whole pipeline on fixtures, no keys or database
 - `npm test` (PGlite, no services) and `npm run test:pg` (real Postgres, run `npm run setup` first)
+- `npm run test:e2e`: Playwright journey on port 3100 with its own `interview_e2e` database (reset each run) and test-only secrets; research uses `e2e/fixture-worker.ts`, never the network
 - `npm run typecheck`, `npm run lint`, `npm run build`: all must pass before a commit
 
 ## Layout

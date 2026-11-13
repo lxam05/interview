@@ -398,6 +398,8 @@ export const submissions = pgTable(
     stage: interviewStageEnum("stage").notNull(),
     format: text("format").notNull(),
     topics: text("topics").notNull(),
+    /** Canonical topics the student ticked (see CANONICAL_TOPICS). */
+    topicSlugs: text("topic_slugs").array().notNull().default(sql`'{}'::text[]`),
     difficulty: integer("difficulty"),
     advice: text("advice"),
     comments: text("comments"),
@@ -408,6 +410,9 @@ export const submissions = pgTable(
     /** Keyed hash, deleted after 30 days. */
     ipHash: text("ip_hash"),
     sourceId: integer("source_id").references(() => sources.id),
+    /** The programme a moderator matched this report to. */
+    programmeId: integer("programme_id").references(() => programmes.id, { onDelete: "set null" }),
+    moderatorNote: text("moderator_note"),
     isSynthetic: boolean("is_synthetic").notNull().default(false),
     createdAt: createdAt(),
   },

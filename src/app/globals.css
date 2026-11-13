@@ -1,26 +1,309 @@
 @import "tailwindcss";
 
+/*
+ * Tokens. Cool exam-paper white, navy ink, highlighter yellow reserved for
+ * verbatim quotes, teal for strong evidence. Everything else stays quiet.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --paper: #f6f7f9;
+  --paper-raised: #ffffff;
+  --ink: #162238;
+  --ink-soft: #3a465c;
+  --muted: #5a6478;
+  --rule: #d3d9e2;
+  --rule-strong: #aab3c2;
+  --highlight: #ffe766;
+  --highlight-ink: #162238;
+  --strong: #1d6e5a;
+  --strong-soft: #e2f0eb;
+  --caution: #8a5a00;
+  --caution-soft: #fbf0d9;
+  --danger: #a3262a;
+  --danger-soft: #fbe6e6;
+  --focus: #2f5bd3;
+  --measure: 68ch;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #10182a;
+    --paper-raised: #172238;
+    --ink: #e8ecf3;
+    --ink-soft: #c5cddb;
+    --muted: #96a1b5;
+    --rule: #2a3750;
+    --rule-strong: #43526e;
+    --highlight: #f2d84a;
+    --highlight-ink: #10182a;
+    --strong: #6cc7a8;
+    --strong-soft: #173a33;
+    --caution: #e7b85a;
+    --caution-soft: #3a2f17;
+    --danger: #f08a8d;
+    --danger-soft: #3d1c1f;
+    --focus: #8fb0ff;
+    color-scheme: dark;
   }
 }
 
+@theme inline {
+  --color-paper: var(--paper);
+  --color-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-strong: var(--strong);
+  --color-caution: var(--caution);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-ui);
+  --font-serif: var(--font-reading);
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+::selection {
+  background: var(--highlight);
+  color: var(--highlight-ink);
+}
+
+/* ── Type scale (1.25 ratio from 16px) ─────────────────────────────────── */
+.t-display {
+  font-size: clamp(2.1rem, 1.2rem + 3.6vw, 3.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.t-h1 {
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.t-h2 {
+  font-size: 1.5625rem;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  font-weight: 600;
+}
+.t-h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.t-small {
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.t-muted {
+  color: var(--muted);
+}
+
+/* Reading text: serif, a little more leading than the interface. */
+.prose-notes {
+  font-family: var(--font-reading), Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  max-width: var(--measure);
+  color: var(--ink-soft);
+}
+
+/* ── The fill-in-the-blank question on the home page ─────────────────── */
+.blank {
+  display: inline-block;
+  min-width: 7ch;
+  width: min(13ch, 100%);
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 0.08em solid var(--ink);
+  padding: 0 0.1em;
+  margin: 0 0.05em;
+  border-radius: 0;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+.blank::placeholder {
+  color: var(--rule-strong);
+}
+.blank:focus {
+  outline: none;
+  background: color-mix(in srgb, var(--highlight) 55%, transparent);
+}
+.blank:focus-visible {
+  outline: none;
+}
+@media (max-width: 520px) {
+  .blank {
+    width: 100%;
+  }
+}
+
+/* ── Verbatim quotes: highlighted, like marked-up notes ──────────────── */
+.quote {
+  font-family: var(--font-reading), Georgia, serif;
+  font-size: 0.975rem;
+  line-height: 1.6;
+}
+.quote mark {
+  background: linear-gradient(transparent 12%, var(--highlight) 12%, var(--highlight) 88%, transparent 88%);
+  color: var(--highlight-ink);
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ── Controls ────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-primary:hover {
+  background: var(--ink-soft);
+}
+.btn-quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+.btn-quiet:hover {
+  border-color: var(--ink);
+}
+.btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+}
+.btn-danger:hover {
+  background: var(--danger-soft);
+}
+.btn-sm {
+  min-height: 2.25rem;
+  padding: 0 0.8rem;
+  font-size: 0.875rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+.field > label,
+.field > legend {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.field .hint {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.field .error {
+  font-size: 0.875rem;
+  color: var(--danger);
+}
+.input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--paper-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  font: inherit;
+}
+textarea.input {
+  min-height: 7rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+.input:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 0;
+  border-color: transparent;
+}
+.input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+/* Visually hidden but available to screen readers. */
+.sr-only-focusable:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A single entrance for the brief's ranked list, and nothing else moves. */
+@media (prefers-reduced-motion: no-preference) {
+  .rank-in > li {
+    animation: rank-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .rank-in > li:nth-child(2) { animation-delay: 50ms; }
+  .rank-in > li:nth-child(3) { animation-delay: 100ms; }
+  .rank-in > li:nth-child(4) { animation-delay: 150ms; }
+  .rank-in > li:nth-child(n + 5) { animation-delay: 200ms; }
+}
+@keyframes rank-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
 }

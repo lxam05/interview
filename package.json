@@ -10,7 +10,6 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:pg": "vitest run --config vitest.pg.config.mts",
-    "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/cli/migrate.ts",
     "setup": "tsx src/cli/setup.ts",
@@ -31,6 +30,7 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "robots-parser": "^3.0.1",
+    "server-only": "^0.0.1",
     "undici": "^6.29.1",
     "zod": "^4.6.7"
   },

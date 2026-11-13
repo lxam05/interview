@@ -7,6 +7,7 @@
 import { parseArgs } from "node:util";
 import { closeDb, getDb } from "@/db/client";
 import { log } from "@/lib/log";
+import { cleanupPersonalData } from "@/lib/protect";
 import { errors, formatError, ResearchError } from "@/research/errors";
 import { liveDeps } from "@/research/live";
 import { executeRun } from "@/research/run";
@@ -34,7 +35,14 @@ async function main() {
   process.on("SIGTERM", () => (stopping = true));
   log("worker.started", { once: Boolean(values.once) });
 
+  let lastCleanup = 0;
   while (!stopping) {
+    // Privacy: delete IP hashes and rate-limit rows older than 30 days, hourly.
+    if (Date.now() - lastCleanup > 3_600_000) {
+      const cleaned = await cleanupPersonalData(db);
+      log("worker.cleanup", cleaned);
+      lastCleanup = Date.now();
+    }
     for (const id of await store.failStaleRuns(db)) {
       process.stderr.write(`${formatError(errors.runStale(id))}\n`);
     }
